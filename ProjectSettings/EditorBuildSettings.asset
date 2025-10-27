@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Daniela_Acosta/Scenes/GameScene.unity
     guid: b8338c39bd458954b9cdce8232cec207
+  - enabled: 1
+    path: Assets/Scenes/Daniela_Acosta/Scenes/SeleccionModoJuego.unity
+    guid: 01b3b55702c4d9c42b932bc63bf39d7b
   m_configObjects: {}
