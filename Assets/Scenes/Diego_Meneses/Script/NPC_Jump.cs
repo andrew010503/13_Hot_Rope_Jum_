@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class NPCJumpRopeController : MonoBehaviour
 {
@@ -7,6 +8,10 @@ public class NPCJumpRopeController : MonoBehaviour
     public float jumpDelay = 0.1f; // margen de tiempo para saltar correctamente
     public float failChance = 0.2f; // probabilidad aleatoria de fallar (20%)
     public float disappearDelay = 2f;
+
+    // Variables para el audio
+    public AudioSource audioSource;  // Para reproducir el sonido
+    public AudioClip saltoClip;      // Tu clip SALTO
 
     private bool isDead = false;
 
@@ -21,6 +26,12 @@ public class NPCJumpRopeController : MonoBehaviour
         if (ropePhase < -0.9f && Random.value > failChance)
         {
             animator.SetTrigger("Jump");
+
+            // Reproducir sonido de salto
+            if (audioSource != null && saltoClip != null)
+            {
+                audioSource.PlayOneShot(saltoClip);
+            }
         }
         else if (ropePhase < -0.9f && Random.value <= failChance)
         {
@@ -28,7 +39,7 @@ public class NPCJumpRopeController : MonoBehaviour
         }
     }
 
-    private System.Collections.IEnumerator Fail()
+    private IEnumerator Fail()
     {
         isDead = true;
         animator.SetTrigger("Die");
