@@ -6,6 +6,11 @@ public class Character_Jump : MonoBehaviour
     [Header("Componentes")]
     public Animator animator;
     
+    [Header("Audio")]
+    public AudioClip jumpSound;
+    public AudioClip deathSound;
+    [Range(0f, 1f)] public float audioVolume = 1f;
+    
     [Header("Configuración de salto")]
     public float jumpHeight = 1.5f;
     public float jumpDuration = 0.5f;
@@ -23,6 +28,7 @@ public class Character_Jump : MonoBehaviour
     private float jumpTimer = 0f;
     private Vector3 startPosition;
     private CapsuleCollider capsuleCollider;
+    private AudioSource audioSource;
 
     void Awake()
     {
@@ -49,6 +55,14 @@ public class Character_Jump : MonoBehaviour
                 Debug.LogError("❌ No se encontró ningún Animator en este objeto o sus hijos.");
             }
         }
+        
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+        audioSource.playOnAwake = false;
+        audioSource.volume = audioVolume;
         
         capsuleCollider = GetComponent<CapsuleCollider>();
         
@@ -123,6 +137,11 @@ public class Character_Jump : MonoBehaviour
         animator.ResetTrigger("Die");
         animator.SetTrigger("Jump");
         
+        if (jumpSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(jumpSound, audioVolume);
+        }
+        
         isJumping = true;
         jumpTimer = 0f;
         startPosition = transform.position;
@@ -166,6 +185,11 @@ public class Character_Jump : MonoBehaviour
         
         animator.ResetTrigger("Jump");
         animator.SetTrigger("Die");
+        
+        if (deathSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(deathSound, audioVolume);
+        }
         
         Debug.Log(name + ": ☠️ Activando animación de muerte");
         
