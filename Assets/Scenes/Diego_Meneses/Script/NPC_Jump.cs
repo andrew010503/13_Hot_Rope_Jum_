@@ -6,11 +6,6 @@ public class NPC_Jump : MonoBehaviour
     public Animator animator;
     public RopeRotation rope;
 
-    [Header("Audio")]
-    public AudioClip jumpSound;
-    public AudioClip deathSound;
-    [Range(0f, 1f)] public float audioVolume = 1f;
-
     [Header("Configuración del salto")]
     public float horizontalJumpDistance = 3.0f;
     public float jumpAnticipation = 0.0f;
@@ -22,7 +17,6 @@ public class NPC_Jump : MonoBehaviour
     private Vector3 lastRopePos;
     private float ropePassCooldown = 0f;
     private float immunityTimer = 0f;
-    private AudioSource audioSource;
 
     void Start()
     {
@@ -31,14 +25,6 @@ public class NPC_Jump : MonoBehaviour
 
         if (rope == null)
             rope = FindObjectOfType<RopeRotation>();
-
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }
-        audioSource.playOnAwake = false;
-        audioSource.volume = audioVolume;
 
         if (rope != null)
         {
@@ -134,11 +120,6 @@ public class NPC_Jump : MonoBehaviour
         animator.ResetTrigger("Die");
         animator.SetTrigger("Jump");
         
-        if (jumpSound != null && audioSource != null)
-        {
-            audioSource.PlayOneShot(jumpSound, audioVolume);
-        }
-        
         float ropePeriod = rope.GetRotationPeriod();
         
         isImmune = true;
@@ -180,12 +161,6 @@ public class NPC_Jump : MonoBehaviour
                     animator.ResetTrigger("Jump");
                     animator.SetTrigger("Die");
                     ropeScript.DisableHit();
-                    
-                    if (deathSound != null && audioSource != null)
-                    {
-                        audioSource.PlayOneShot(deathSound, audioVolume);
-                    }
-                    
                     Debug.Log(name + ": 💀 Fue golpeado por la cuerda");
                 }
                 else
