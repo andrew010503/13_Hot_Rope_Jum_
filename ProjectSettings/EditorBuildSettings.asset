@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Daniela_Acosta/Scenes/PantallaPerder.unity
     guid: 5cb6d1cec6b9a83418b99b0ac15c7e9c
+  - enabled: 1
+    path: Assets/Scenes/Diego_Meneses/Level_Base.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
