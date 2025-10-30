@@ -1,0 +1,18 @@
+using UnityEngine;
+using UnityEngine.SceneManagement; // Importante para cambiar escenas
+
+public class MenuManager : MonoBehaviour
+{
+    // Cargar una escena por su nombre
+    public void CargarEscena(string nombreEscena)
+    {
+        SceneManager.LoadScene(nombreEscena);
+    }
+
+    // Cerrar el juego (funciona solo al compilar)
+    public void SalirDelJuego()
+    {
+        Debug.Log("Saliendo del juego...");
+        Application.Quit();
+    }
+}
