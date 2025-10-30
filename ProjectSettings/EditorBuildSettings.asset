@@ -15,12 +15,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Daniela_Acosta/Scenes/SeleccionModoJuego.unity
     guid: 01b3b55702c4d9c42b932bc63bf39d7b
   - enabled: 1
-    path: Assets/Scenes/Diego_Meneses/Level_Base.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
+    path: Assets/Scenes/Daniela_Acosta/Scenes/SeleccionPersonajes.unity
+    guid: eb7e379844656004faecf795948a67b6
   - enabled: 1
     path: Assets/Scenes/Daniela_Acosta/Scenes/PantallaGanar.unity
     guid: 3f006c390a8b92145bc2de46bf4efdee
   - enabled: 1
-    path: Assets/Scenes/Daniela_Acosta/Scenes/SeleccionPersonajes.unity
-    guid: eb7e379844656004faecf795948a67b6
+    path: Assets/Scenes/Daniela_Acosta/Scenes/PantallaPerder.unity
+    guid: 5cb6d1cec6b9a83418b99b0ac15c7e9c
   m_configObjects: {}
