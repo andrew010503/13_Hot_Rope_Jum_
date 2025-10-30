@@ -5,6 +5,11 @@ public class NPC_Jump : MonoBehaviour
     [Header("Componentes")]
     public Animator animator;
     public RopeRotation rope;
+    public AudioSource audioSource; // 🎵 Nuevo componente de audio
+
+    [Header("Sonidos del personaje")]
+    public AudioClip jumpSound; // 🎵 Sonido al saltar
+    public AudioClip deathSound; // 💀 Sonido al morir
 
     [Header("Configuración del salto")]
     public float horizontalJumpDistance = 3.0f;
@@ -43,6 +48,14 @@ public class NPC_Jump : MonoBehaviour
             {
                 Debug.Log(name + ": Parámetro: " + param.name + " | Tipo: " + param.type);
             }
+        }
+
+        // 🎵 Asegurarse de tener un AudioSource
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+                Debug.LogWarning(name + ": ⚠️ No se encontró AudioSource. Agrega uno al NPC.");
         }
     }
 
@@ -83,13 +96,12 @@ public class NPC_Jump : MonoBehaviour
         if (isApproaching && currentDist < horizontalJumpDistance && !hasJumped)
         {
             hasJumped = true;
-            
+
             bool willFail = Random.value < failChance;
 
             if (!willFail)
             {
-                Debug.Log(name + ": 🟡 Preparando salto #" + (isImmune ? "X" : "OK") + ", distancia: " + currentDist.ToString("F2"));
-                
+                Debug.Log(name + ": 🟡 Preparando salto");
                 if (jumpAnticipation <= 0f)
                 {
                     PerformJump();
@@ -119,12 +131,16 @@ public class NPC_Jump : MonoBehaviour
         Debug.Log(name + ": 🟢 EJECUTANDO SALTO - Activando trigger 'Jump' en el Animator");
         animator.ResetTrigger("Die");
         animator.SetTrigger("Jump");
-        
+
+        // 🎵 Sonido de salto
+        if (audioSource != null && jumpSound != null)
+            audioSource.PlayOneShot(jumpSound);
+
         float ropePeriod = rope.GetRotationPeriod();
-        
+
         isImmune = true;
         immunityTimer = ropePeriod * 0.9f;
-        Debug.Log(name + ": 🛡️ Inmunidad activada por " + immunityTimer.ToString("F2") + " segundos (período de cuerda: " + ropePeriod.ToString("F2") + "s)");
+        Debug.Log(name + ": 🛡️ Inmunidad activada por " + immunityTimer.ToString("F2") + " segundos");
     }
 
     void OnTriggerEnter(Collider other)
@@ -143,9 +159,9 @@ public class NPC_Jump : MonoBehaviour
             if (ropeScript != null && ropeScript.CanHit())
             {
                 bool isInJumpAnimation = false;
-                
+
                 AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
-                
+
                 if (currentState.IsName("A_Jump") ||
                     currentState.IsName("Jump") ||
                     currentState.IsName("Jumping") ||
@@ -154,7 +170,7 @@ public class NPC_Jump : MonoBehaviour
                     isInJumpAnimation = true;
                     Debug.Log(name + ": ✅ En animación de salto: " + currentState.ToString());
                 }
-                
+
                 if (!isInJumpAnimation)
                 {
                     isDead = true;
@@ -162,6 +178,10 @@ public class NPC_Jump : MonoBehaviour
                     animator.SetTrigger("Die");
                     ropeScript.DisableHit();
                     Debug.Log(name + ": 💀 Fue golpeado por la cuerda");
+
+                    // 💀 Sonido de muerte
+                    if (audioSource != null && deathSound != null)
+                        audioSource.PlayOneShot(deathSound);
                 }
                 else
                 {
